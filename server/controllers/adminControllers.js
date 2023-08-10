@@ -68,35 +68,37 @@ const addTournament = async (req, res, next) => {
     Tourn.save()
       .then((result) => {
         console.log(result);
-        var targetDateTime = result.StartsAt; // Assuming result.StartsAt is a valid ISO 8601 timestamp
-        //var date = timestamp.split('.')[0];
-
-        // Schedule a task to run once at a specific date and time
-        //  const targetDateTime = new Date(date); // Replace with your desired date and time
-
+        var targetDateTime = new Date(result.StartsAt); // Convert the timestamp to a Date object
+        const fiveMinutesInMillis = 5 * 60 * 1000; // Use 5 minutes instead of 3
+        targetDateTime = new Date(targetDateTime - fiveMinutesInMillis); 
+        
         const minute = targetDateTime.getMinutes();
         const hour = targetDateTime.getHours();
         const dayOfMonth = targetDateTime.getDate();
         const month = targetDateTime.getMonth() + 1; // Months are zero-based, so add 1
         const year = targetDateTime.getFullYear();
         console.log(year, month, dayOfMonth, hour, minute);
-        const cronPattern = `${minute - 3} ${hour} ${dayOfMonth} ${month} *`; // Schedule for a specific date and month
+        const cronPattern = `${minute} ${hour} ${dayOfMonth} ${month} *`; // Schedule for a specific date and month
 
-        cron.schedule(cronPattern, () => {
+        cron.schedule(cronPattern, async() => {
           console.log(new Date());
           console.log(
             "Scheduled task executed at the specified date and time."
           );
+        const result1 = await Tournament.findOne({_id :  result._id})
+        console.log(result1)
           req.params.id = result._id;
           var createBool = true;
-          if(result.Players.length == 0)
+          if(result1.Players.length == 0)
           {
             createBool = false;
           }
-          if (result.Type == "Points" && result.Players.length % 2 != 0) {
+          if (result1.Type == "Points" && result1.Players.length % 2 != 0) {
               createBool = false;
           }
-          if(result.Type == "Brackets" && !(Number.isInteger(check) && check != 0))
+          var check = Math.log2(result1.Players.length);
+          console.log(check);
+          if(result1.Type == "Brackets" && !(Number.isInteger(check) && check != 0))
           {
             createBool = false;
           }
