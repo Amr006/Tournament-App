@@ -14,9 +14,7 @@ const authenticate = (req,res,next) => {
         next()
     }catch(error)
     {
-        res.status(403).json({
-          message : "user is not authorized !!!! "
-        })
+      res.redirect("/login")
         
     }
 }
