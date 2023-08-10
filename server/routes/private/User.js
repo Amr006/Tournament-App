@@ -34,7 +34,7 @@ router.post(
 
 router.post(
   "/displayGraph/:id",
-  authenticateMidd,
+  
   userControllers.EnterTournament , tournamentControllers.displayNodes
 );
 
