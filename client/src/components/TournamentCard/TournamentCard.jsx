@@ -139,7 +139,7 @@ const TournamentCard = ({tournament,finished}) => {
   }
 
   const handleCopyJoinLink = ()=>{
-    navigator.clipboard.writeText(`http://localhost:3001/join/${tournament._id}`)
+    navigator.clipboard.writeText(`https://chess-tournament.onrender.com/join/${tournament._id}`)
     handleToastMessage("Join Link Copied","s")
   }
 
@@ -199,7 +199,7 @@ const TournamentCard = ({tournament,finished}) => {
             <Box className={`flex-start ${styles.timing}`}>
               <Box className="flex-center">
                 <HourglassEmptyRounded fontSize='small' className={styles.icon}/>
-                <Typography variant='h5'>Join Ended At</Typography>
+                <Typography variant='h5'>Join Ends At</Typography>
                 <Typography variant='h5' className={styles.time}>{joinEndTime}</Typography>
               </Box>
               <Box className="flex-center">
