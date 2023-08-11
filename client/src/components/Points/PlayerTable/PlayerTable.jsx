@@ -94,7 +94,7 @@ const PlayerTable = ({data}) => {
                                             {
                                                 true && (
                                                     <Box className={`flex-start ${styles.buttons}`}>
-                                                        <Button disabled={currentRound > i+1} onClick={()=>handleEnterMatch(match.gameLink, match.gameID)}>
+                                                        <Button disabled={currentRound < i+1} onClick={()=>handleEnterMatch(match.gameLink, match.gameID)}>
                                                             Match
                                                         </Button>
                                                         {

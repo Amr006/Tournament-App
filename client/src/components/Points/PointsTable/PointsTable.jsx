@@ -63,8 +63,6 @@ function TablePaginationActions(props) {
 }
 
 const PointsTable = ({data}) => {
-    var c = -1;
-
     const {username} = useSelector((state)=>state.auth)
 
     const createData=(...args)=> {
@@ -130,11 +128,10 @@ const PointsTable = ({data}) => {
                   ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   : rows
                 ).map((row,i) => {
-                  c++
                   return(
                   <TableRow className={`${styles.table_cells} ${row.name === username && styles.active}`} key={row.name}>
-                      <TableCell key={c} className={`flex-start ${styles.player}`} component="th" scope="row">
-                        <Box className={`flex-center ${c+1 === 1 && styles.first} ${styles.player_photo}`}>
+                      <TableCell key={i} className={`flex-start ${styles.player}`} component="th" scope="row">
+                        <Box className={`flex-center ${i+1 === 1 && styles.first} ${styles.player_photo}`}>
                           <Box alt = {"avatar"} component = {"img"} src = {avatarImg}/>
                         </Box>
                         <Link className={`${styles.player_name}`} to={`/profile/${row.name}`}>
@@ -146,7 +143,7 @@ const PointsTable = ({data}) => {
                           return key.startsWith("round") && (
                             <TableCell key={x*2} style={{ width: 160 }} align="center" className={`tac`}>
                               {
-                                <Button onClick={()=>window.open(data[c].Matches[x-2].gameLink ,"_blank")} className={`${styles.round_point}`}>{row[key]}</Button>
+                                <Button onClick={()=>window.open(data[i].Matches[x-2].gameLink ,"_blank")} className={`${styles.round_point}`}>{row[key]}</Button>
                               }
                             </TableCell>
                           )

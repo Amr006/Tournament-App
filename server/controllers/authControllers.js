@@ -606,10 +606,17 @@ transporter.verify((err, success) => {
 }
 
 const sendVerificationEmail = async({ _id, Email }, type, res) => {
-  const currentUrl = "https://chess-tournament.onrender.com";
+  const currentUrl = "http://localhost:3001";
   const uniqueString = uuidv4() + _id;
 
   //console.log(uniqueString);
+  const alreadySendCheck = await Userverification.findOne({ userId: _id})
+  if(alreadySendCheck)
+  {
+    return res.status(402).json({
+      message: "You have already sent verification email",
+    });
+  }
 
   const mailOptions = options(type, currentUrl, uniqueString, Email, _id);
   bcrypt.hash(uniqueString, 10, (err, hashedUniqueString) => {

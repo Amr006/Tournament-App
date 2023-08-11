@@ -6,6 +6,7 @@ import { getTournaments } from '../../store/slices/tournamentsSlice'
 import TournamentCard from '../../components/TournamentCard/TournamentCard'
 import Head from '../../components/Head/Head'
 import BasicLoading from '../../components/BasicLoading/BasicLoading'
+import RefreshButton from "../../components/RefreshButton/RefreshButton"
 
 //MUI
 import { Box, Container, IconButton,Typography } from '@mui/material'
@@ -39,6 +40,7 @@ const Tournaments = () => {
   
   return (
     <MyBox className={styles.tournament_section} id="tournaments">
+      <RefreshButton type="tournaments"/>
       <Container className={`grid-stretch ${styles.tournament_contain}`}>
         <Head title={"TOURNAMENTS"} align={"center"} h={"h2"} description ={"Find the perfect tournaments for you. Head to head matches where you pick the game, rules and prize."}/>
         <Box className={`grid-center ${styles.tournaments_buttons}`}>

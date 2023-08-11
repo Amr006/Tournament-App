@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { getBrackets } from '../../store/slices/bracketsSlice'
 import { getPoints } from '../../store/slices/pointsSlice'
 import { useParams } from 'react-router-dom'
+import { getTournaments } from '../../store/slices/tournamentsSlice'
 
 const RefreshButton = ({type}) => {
     const dispatch =useDispatch()
@@ -13,8 +14,10 @@ const RefreshButton = ({type}) => {
     const handleRefreshPage=()=>{
         if(type === "Points"){
             dispatch(getPoints(tournamentId))
-        }else{
+        }else if(type === "Brackets"){
             dispatch(getBrackets(tournamentId))
+        }else{
+            dispatch(getTournaments())
         }
     }
     return (
