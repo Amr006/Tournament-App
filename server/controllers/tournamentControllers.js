@@ -354,6 +354,7 @@ const gameEnds = async (req, res, next) => {
     });
 };
 
+
 const displayTournaments = (req, res, next) => {
   Tournament.find()
     .then((result) => {

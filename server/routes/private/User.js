@@ -6,11 +6,29 @@ const userControllers = require("../../controllers/userControllers");
 const tournamentControllers = require("../../controllers/tournamentControllers");
 const pointsTournamentControllers = require("../../controllers/pointsTournamentControllers");
 const axios = require("axios");
+const rateLimit = require('express-rate-limit')
+
+const ResetLimiter = rateLimit({
+	windowMs: 1000, 
+	max: 1, 
+	standardHeaders: true, 
+	legacyHeaders: false,
+  message : 'Already send email' // Disable the `X-RateLimit-*` headers
+	// store: ... , // Use an external store for more precise rate limiting
+})
+
+const createAccountLimiter = rateLimit({
+	windowMs: 60 * 60 * 1000, // 1 hour
+	max: 5, // Limit each IP to 5 create account requests per `window` (here, per hour)
+	message:
+		'Too many accounts created from this IP, please try again after an hour',
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
 
 
 
-
-router.post("/register", authControllers.register);
+router.post("/register", createAccountLimiter ,authControllers.register);
 
 router.get("/user/verify/:userId/:uniqueString", authControllers.verify);
 
@@ -44,14 +62,9 @@ router.post(
   userControllers.EnterTournament , pointsTournamentControllers.displayNodes
 );
 
-router.post("/ForgotPassword" , authControllers.forgetPassword );
+router.post("/ForgotPassword" , ResetLimiter , authControllers.forgetPassword );
 
-router.get("/user/resetPassword/:userId/:uniqueString" , authControllers.resetEmail , (req,res) => {
-    //res.render("reset Password Page")
-    req.session.userId= req.params.userId ;
-    res.status(200).json({user_id :req.params.userId 
-    })
-  }
+router.get("/user/resetPassword/:userId/:uniqueString" , authControllers.resetEmail
 )
 
 router.post("/ResetPassword" , authControllers.resetPassword );

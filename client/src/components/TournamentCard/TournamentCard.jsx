@@ -163,7 +163,7 @@ const TournamentCard = ({ tournament, finished }) => {
 
   const handleCopyJoinLink = () => {
     navigator.clipboard.writeText(
-      `https://chess-tournament.onrender.com//join/${tournament._id}`
+      `https://chess-tournament.onrender.com/join/${tournament._id}`
     );
     handleToastMessage("Join Link Copied", "s");
   };
@@ -247,7 +247,7 @@ const TournamentCard = ({ tournament, finished }) => {
                   fontSize="small"
                   className={styles.icon}
                 />
-                <Typography variant="h5">Join Ended At</Typography>
+                <Typography variant="h5">Join Ends At</Typography>
                 <Typography variant="h5" className={styles.time}>
                   {joinEndTime}
                 </Typography>

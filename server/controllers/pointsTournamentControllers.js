@@ -18,7 +18,7 @@ timeValue.set("Classic", 1800);
 const displayNodes = async (req, res, next) => {
   const tournament_Id = req.params.id;
   console.log("result");
-  await Node.find({ tournamentID: tournament_Id })
+  await Node.find({ tournamentID: tournament_Id },"-_id")
     .populate("tournamentID")
     .then(async (result) => {
       if (result.length !== 0) {

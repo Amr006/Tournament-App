@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
-const axios = require('axios');
+const axios = require("axios");
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -26,14 +26,13 @@ transporter.verify((err, success) => {
   }
 });
 
- function  options (type, currentUrl, uniqueString, Email, _id) {
+function options(type, currentUrl, uniqueString, Email, _id) {
   let obj;
-  var longUrl ;
-  if(type == "forgotPassword")
-  {
-    longUrl = currentUrl +"/reset_password/" +_id +"/" +uniqueString
-  }else{
-    longUrl = currentUrl +"/verify/" +_id +"/" +uniqueString
+  var longUrl;
+  if (type == "forgotPassword") {
+    longUrl = currentUrl + "/reset_password/" + _id + "/" + uniqueString;
+  } else {
+    longUrl = currentUrl + "/verify/" + _id + "/" + uniqueString;
   }
 
   // const headers = {
@@ -46,7 +45,7 @@ transporter.verify((err, success) => {
   //   "long_url": "https://www.npmjs.com/package/shorturl",
   //   "expire_at_views" : 2
   // };
-  
+
   // try {
   //   var response = await axios.post("https://t.ly/api/v1/link/shorten", body, { headers });
   //   console.log(response.data);
@@ -54,7 +53,7 @@ transporter.verify((err, success) => {
   //   console.error('Error making request:', error);
   // }
   // var ShortUrl = response.data.short_url ;
-  var ShortUrl = longUrl ;
+  var ShortUrl = longUrl;
   if (type == "forgotPassword") {
     obj = {
       from: process.env.AUTH_EMAIL,
@@ -242,8 +241,7 @@ transporter.verify((err, success) => {
                           <table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                                <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${
-                                  ShortUrl}>Reset Password</a>
+                                <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${ShortUrl}>Reset Password</a>
                               </td>
                             </tr>
                           </table>
@@ -257,9 +255,7 @@ transporter.verify((err, success) => {
                 <!-- start copy -->
                 <tr>
                   <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                  <p style="margin: 0;">If that doesn't work, <a target="_blank" href=${
-                    ShortUrl
-                  }>
+                  <p style="margin: 0;">If that doesn't work, <a target="_blank" href=${ShortUrl}>
                     Click here
     </a></p>
                   </td>
@@ -514,9 +510,7 @@ transporter.verify((err, success) => {
                           <table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                                <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${
-                                  ShortUrl
-                                }>Activate Account</a>
+                                <a target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;" href=${ShortUrl}>Activate Account</a>
                               </td>
                             </tr>
                           </table>
@@ -530,9 +524,7 @@ transporter.verify((err, success) => {
                 <!-- start copy -->
                 <tr>
                   <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                    <p style="margin: 0;">If that doesn't work, <a target="_blank" href=${
-                      ShortUrl
-                    }>
+                    <p style="margin: 0;">If that doesn't work, <a target="_blank" href=${ShortUrl}>
                       Click here
       </a></p>
                     
@@ -605,14 +597,13 @@ transporter.verify((err, success) => {
   return obj;
 }
 
-const sendVerificationEmail = async({ _id, Email }, type, res) => {
+const sendVerificationEmail = async ({ _id, Email }, type, res) => {
   const currentUrl = "https://chess-tournament.onrender.com";
   const uniqueString = uuidv4() + _id;
 
   //console.log(uniqueString);
-  const alreadySendCheck = await Userverification.findOne({ userId: _id})
-  if(alreadySendCheck)
-  {
+  const alreadySendCheck = await Userverification.findOne({ userId: _id });
+  if (alreadySendCheck) {
     return res.status(402).json({
       message: "You have already sent verification email",
     });
@@ -645,7 +636,6 @@ const sendVerificationEmail = async({ _id, Email }, type, res) => {
             })
             .catch((err) => {
               console.log(err);
-              
             });
         })
         .catch((err) => {
@@ -661,20 +651,20 @@ const sendVerificationEmail = async({ _id, Email }, type, res) => {
 };
 
 const register = (req, res, next) => {
-  User.findOne({ Name: req.body.username_reg}).then((result) => {
+  User.findOne({ Name: req.body.username_reg }).then((result) => {
     if (result) {
       res.status(403).json({
         message: "Username Already Exists!",
       });
     } else {
-      bcrypt.hash(req.body.password_reg , 10, function (err, hashedPass) {
+      bcrypt.hash(req.body.password_reg, 10, function (err, hashedPass) {
         if (err) {
           res.status(404).json({
             error: err,
           });
         }
         let user = new User({
-          Name: req.body.username_reg ,
+          Name: req.body.username_reg,
           Password: hashedPass,
           Email: req.body.email,
         });
@@ -713,21 +703,21 @@ const verify = (req, res, next) => {
                 })
                 .catch((err) => {
                   res.status(404).json({
-                    error : err,
+                    error: err,
                   });
                 });
               console.log("deleted verification successfully");
             })
             .catch((err) => {
               res.status(404).json({
-                error : err,
+                error: err,
               });
             });
         } else {
           bcrypt.compare(uniqueString, hashedUniqueString, (err, result) => {
             if (err) {
               res.status(404).json({
-                message : err,
+                message: err,
               });
             } else {
               if (result) {
@@ -739,32 +729,44 @@ const verify = (req, res, next) => {
                   .then((result) => {
                     Userverification.deleteOne({ userId: userId })
                       .then((result) => {
-                        res.status(200).json({message:"the email is verified"})
+                        res
+                          .status(200)
+                          .json({ message: "the email is verified" });
                       })
                       .catch((err) => {
                         console.log("error while deleting verification");
-                        res.status(403).json({message:"error while deleting verification"})
+                        res
+                          .status(403)
+                          .json({
+                            message: "error while deleting verification",
+                          });
                       });
                   })
                   .catch((err) => {
                     console.log("couldn't update verified");
-                    res.status(403).json({message:"couldn't update verified"})
+                    res
+                      .status(403)
+                      .json({ message: "couldn't update verified" });
                   });
               } else {
-                  console.log("incorrect verification");
-                  res.status(403).json({message:"incorrect verification"})
+                console.log("incorrect verification");
+                res.status(403).json({ message: "incorrect verification" });
               }
             }
           });
         }
       } else {
         console.log("couldnt find Userverification or already verified");
-        res.status(404).json({message:"couldn't find Userverification or already verified"})
+        res
+          .status(404)
+          .json({
+            message: "couldn't find Userverification or already verified",
+          });
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(404).json({message:err})
+      res.status(404).json({ message: err });
     });
 };
 
@@ -795,13 +797,13 @@ const login = (req, res, next) => {
                     expiresIn: "30h",
                   }
                 );
-                res.cookie("token" , token)
+                res.cookie("token", token);
                 res.status(200).json({
-                    message: 'login successfully !' ,
-                    token:token,
-                    role :user.role,
-                    tutorial : user.tutorial
-                })
+                  message: "login successfully !",
+                  token: token,
+                  role: user.role,
+                  tutorial: user.tutorial,
+                });
               } else {
                 res.status(403).json({
                   message: "Username or Password is incorrect",
@@ -829,11 +831,11 @@ const forgetPassword = (req, res, next) => {
       if (result) {
         sendVerificationEmail(result, "forgotPassword", res);
       } else {
-        res.status(404).json({message:"User isn't Exist!"})
+        res.status(404).json({ message: "User isn't Exist!" });
       }
     })
     .catch((err) => {
-      res.status(403).json({message:"Error!"})
+      res.status(403).json({ message: "Error!" });
     });
 };
 
@@ -853,8 +855,8 @@ const resetEmail = (req, res, next) => {
               User.deleteOne({ _id: userId })
                 .then((result) => {
                   res.status(404).json({
-                    message : "link has expired",
-                  });;
+                    message: "link has expired",
+                  });
                 })
                 .catch((err) => {
                   console.log(err);
@@ -870,19 +872,24 @@ const resetEmail = (req, res, next) => {
           bcrypt.compare(uniqueString, hashedUniqueString, (err, result) => {
             if (err) {
               res.status(404).json({
-                    error : err,
-                    message : "server error"
-                  });
+                error: err,
+                message: "server error",
+              });
             } else {
               if (result) {
-                Userverification.deleteOne({ userId: userId })
-                  .then((result) => {
-                  //  console.log("the email is verified");
+                // Userverification.deleteOne({ userId: userId })
+                //   .then((result) => {
+                //   //  console.log("the email is verified");
+                //   })
+                //   .catch((err) => {
+                //     //console.log("error while deleting verification");
+                //   });
+                
+                  
+                  res.status(200).json({user_id :hashedUniqueString
                   })
-                  .catch((err) => {
-                    //console.log("error while deleting verification");
-                  });
-                next();
+              
+                
               } else {
                 //console.log("incorrect verification");
               }
@@ -898,40 +905,51 @@ const resetEmail = (req, res, next) => {
     });
 };
 
-const resetPassword = (req, res, next) => {
+const resetPassword = async(req, res, next) => {
   const userId = req.body.user_id;
+  console.log(userId);
   
-  const newPassword = req.body.new_password;
-
-  bcrypt.hash(newPassword, 10, (err, hashedPass) => {
-    if (err) {
-      res.json({
-        status: "failed",
-        message: "an error occurred while hashing email data !",
-      });
-    } else {
-      User.findOneAndUpdate(
-        { _id: userId },
-        { Password: hashedPass },
-        { new: true }
-      )
-        .then((result) => {
-          console.log(result);
-          if (result) res.json({
-            status: "success",
-            message: "Password changed successfully",
-          });
-          else res.json({
-            status: "failed",
-            message: "error while reseting the password",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          res.send("error while reseting the password");
+  const data = await Userverification.findOne({ uniqueString: userId });
+  if (data) {
+    await Userverification.deleteOne({ uniqueString: userId })
+    const newPassword = req.body.new_password;
+    console.log(data._id);
+    bcrypt.hash(newPassword, 10, (err, hashedPass) => {
+      if (err) {
+        res.json({
+          status: "failed",
+          message: "an error occurred while hashing email data !",
         });
-    }
-  });
+      } else {
+        User.findOneAndUpdate(
+          { _id: data.userId },
+          { Password: hashedPass },
+          { new: true }
+        )
+          .then((result) => {
+            console.log(result);
+            if (result)
+              res.json({
+                status: "success",
+                message: "Password changed successfully",
+              });
+            else
+              res.json({
+                status: "failed",
+                message: "error while reseting the password",
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            //res.send("error while reseting the password");
+          });
+      }
+    });
+  } else {
+    res.status(400).json({
+      message: "error while reseting the password",
+    });
+  }
 };
 
 module.exports = {
