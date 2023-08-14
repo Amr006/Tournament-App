@@ -67,6 +67,10 @@ app.use(session({
 }));
 
 
+app.get("/" , (req,res) => {
+  res.send("hello world")
+}
+)
 
 app.use("/api",HomeRoutes)
 app.use("/api" , UserRoutes )
