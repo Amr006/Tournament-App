@@ -598,7 +598,7 @@ function options(type, currentUrl, uniqueString, Email, _id) {
 }
 
 const sendVerificationEmail = async ({ _id, Email }, type, res) => {
-  const currentUrl = "https://chess-tournament.onrender.com";
+  const currentUrl = "https://tournament-app-beta.vercel.app/";
   const uniqueString = uuidv4() + _id;
 
   //console.log(uniqueString);

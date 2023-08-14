@@ -25,7 +25,7 @@ const corsOptions = {
     'https://chess-tournament.onrender.com',
     'https://lichess.org',
     'http://localhost:3001',
-    "*"
+    "https://tournament-app-beta.vercel.app/"
     
     
 
@@ -53,7 +53,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      connectSrc: ["'self'", 'https://lichess.org/', 'https://chess-tournament.onrender.com/' , 'http://localhost:3001' , "*"]
+      connectSrc: ["'self'", 'https://lichess.org/', 'https://chess-tournament.onrender.com/' , 'http://localhost:3001' , "https://tournament-app-beta.vercel.app/"]
     }
   }
 }));
